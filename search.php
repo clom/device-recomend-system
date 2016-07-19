@@ -14,7 +14,7 @@ include_once(dirname(__FILE__).'/header.html');
             <div class="col-md-4">
                 <form method="POST" action="search.php">
                     <label>Spec</label>
-                    <select class="form-control">
+                    <select class="form-control" name="spec">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -23,7 +23,7 @@ include_once(dirname(__FILE__).'/header.html');
                     </select>
                     <br>
                     <label>Design</label>
-                    <select class="form-control">
+                    <select class="form-control" name="spec">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -32,7 +32,7 @@ include_once(dirname(__FILE__).'/header.html');
                     </select>
                     <br>
                     <label>Price</label>
-                    <select class="form-control">
+                    <select class="form-control" name="spec">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
