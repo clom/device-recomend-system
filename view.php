@@ -28,7 +28,7 @@ include_once(dirname(__FILE__).'/header.html');
                 </table>
             </div>
             <div class="col-md-4">
-                <h1>Similar User Recomend Device</h1>
+                <h1>Similar User Recommend Device</h1>
             </div>
         </div>
     </body>
