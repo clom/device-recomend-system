@@ -1,6 +1,6 @@
 <html>
 <?php
-$title = "it works!"; 
+$title = "Device Recomend Service"; 
 include_once(dirname(__FILE__).'/header.html'); 
 ?>
     <body>
