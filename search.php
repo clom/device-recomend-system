@@ -1,7 +1,17 @@
 <html>
 <?php
 $title = "Device Search"; 
-include_once(dirname(__FILE__).'/header.html'); 
+include_once(dirname(__FILE__).'/header.html');
+require_once(dirname(__FILE__).'/selecter.php'); 
+$spec = 0;
+$design = 0;
+$price = 0;
+if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])){
+    $spec = $_POST['spec'];
+    $design = $_POST['design'];
+    $price = $_POST['price'];
+}
+
 ?>
     <body>
         <?php include_once(dirname(__FILE__).'/navbar.html'); ?>  
@@ -15,29 +25,17 @@ include_once(dirname(__FILE__).'/header.html');
                 <form method="POST" action="search.php">
                     <label>Spec</label>
                     <select class="form-control" name="spec">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                        <?php selected_generator($spec); ?>
                     </select>
                     <br>
                     <label>Design</label>
-                    <select class="form-control" name="spec">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select class="form-control" name="design">
+                        <?php selected_generator($design); ?>
                     </select>
                     <br>
                     <label>Price</label>
-                    <select class="form-control" name="spec">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select class="form-control" name="price">
+                        <?php selected_generator($price); ?>
                     </select>
                     <br>
                     <button type="submit" class="btn btn-primary btn-large btn-block">Search</button>
