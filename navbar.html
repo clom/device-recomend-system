@@ -17,6 +17,7 @@
               <form class="form" method="POST" action="./lib/auth.php">
                 <input class="form-control input-sm" name="uid" type="text" placeholder="Username" required><br>
                 <input class="form-control input-sm" name="password" type="password" placeholder="password" required><br>
+                <input type="hidden" name="returnpath" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
                 <button type="submit" class="btn btn-info btn-block">Login</button>
               </form>
             </div>
