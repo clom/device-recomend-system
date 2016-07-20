@@ -1,5 +1,5 @@
-<?php session_start(); ?>
 <header>
+  <?php session_start(); ?>
   <div class="navbar navbar-inverse">
     <div class="container">
       <div class="navbar-header">
@@ -27,11 +27,12 @@
           </li>
           <?php } else{ ?>
           <li class="dropdown">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><?php echo $_SESSION['account']." さん"; ?><span class="caret"></span></a>
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><?php echo htmlspecialchars_decode($_SESSION['account'])." さん"; ?><span class="caret"></span></a>
             <div class="dropdown-menu">
-              <h2> Service Menu </h2>
+              <h3> Service Menu </h3>
               <hr>
-              <a href="./lib/logout.php">Logout</a>
+              <button type="button" class="btn btn-lg btn-default btn-block" onclick="location.href='./device.php'">Add DeviceInfo</button>
+              <button type="button" class="btn btn-lg btn-danger btn-block" onclick="location.href='./lib/logout.php'">Logout</button>
             </div>
           </li>
           <?php } ?>
