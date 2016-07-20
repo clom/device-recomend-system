@@ -2,6 +2,7 @@
 $title = "Device ALL List"; 
 include_once(dirname(__FILE__).'/header.html');
 require_once(dirname(__FILE__).'/selecter.php'); 
+require_once(dirname(__FILE__).'/lib/action.php'); 
 
 ?>
     <body>
@@ -18,11 +19,10 @@ require_once(dirname(__FILE__).'/selecter.php');
                 <table class="table table-bordered">
                     <thead>
                         <th>Device name</th>
-                        <th>Spec Avg.</th>
-                        <th>Design Avg.</th>
-                        <th>Price Avg.</th>
+                        <th>Manufacture</th>
                     </thead>
                     <tbody>
+                        <?php all_device_table(); ?>
                     </tbody>
                 </table>
             </div>

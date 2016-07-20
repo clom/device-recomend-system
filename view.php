@@ -2,7 +2,16 @@
 <?php
 $title = "Device View"; 
 include_once(dirname(__FILE__).'/header.html');
-require_once(dirname(__FILE__).'/selecter.php'); 
+require_once(dirname(__FILE__).'/selecter.php');
+require_once(dirname(__FILE__).'/lib/action.php');
+if(empty($_GET['devid'])){
+    header("Location: /");
+}
+
+$dev_id = htmlspecialchars($_GET['devid']);
+
+$device = search_device($dev_id);
+
 $spec = 0;
 $design = 0;
 $price = 0;
@@ -19,7 +28,8 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
             <div class="col-md-8">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <p> Device Name </p>
+                        <p> Device Name: <?php echo $device['name']; ?> </p>
+                        <p> Manufacture: <?php echo $device['maker']; ?> </p>
                     </div>
                     <div class="panel-body">
                         <p> Your Eval Rating </p>

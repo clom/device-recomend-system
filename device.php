@@ -1,6 +1,6 @@
 <html>
 <?php
-$title = "signup!"; 
+$title = "new device!"; 
 require_once(dirname(__FILE__)."/lib/action.php");
 if(!login_check()){
     header("Location: /");
