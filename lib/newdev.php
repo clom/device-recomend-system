@@ -8,26 +8,26 @@
 
     
 
-        // sqlite connect
-        $link = new SQLite3(dirname(__FILE__) . "/../main.db");
-        if (!$link) {
-            die('接続失敗です。'.$sqliteerror);
+    // sqlite connect
+    $link = new SQLite3(dirname(__FILE__) . "/../main.db");
+    if (!$link) {
+        die('接続失敗です。'.$sqliteerror);
+    }
+    else{
+	    $sql = "select count(*) from device where name = '".$device."'";
+	    $result = $link->query($sql);
+        $res = $result->fetchArray(SQLITE3_ASSOC);
+        if($res['count(*)'] == 0){
+            $sql = "insert into device (name, maker) values ('".$device."','".$maker."')";
+            $result = $link->exec($sql);
+	        $sql = "select * from device where name = '".$device."'";
+	        $result = $link->query($sql);                
         }
-	    else{
-		    $sql = "select count(*) from device where name = '".$device."'";
-		    $result = $link->query($sql);
-            $res = $result->fetchArray(SQLITE3_ASSOC);
-            if($res['count(*)'] == 0){
-                $sql = "insert into device (name, maker) values ('".$device."','".$maker."')";
-	            $result = $link->exec($sql);
-		        $sql = "select * from device where name = '".$device."'";
-		        $result = $link->query($sql);                
-            }
-             $res = $result->fetchArray(SQLITE3_ASSOC);
-             $numb = $res['ID'];
+        $res = $result->fetchArray(SQLITE3_ASSOC);
+        $numb = $res['ID'];
 
         }
-        $link->close();
+    $link->close();
 
     // redirect path
     header("Location: /view.php?devid=".$numb);
