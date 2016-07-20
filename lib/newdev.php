@@ -8,7 +8,6 @@
 
     
 
-    if($pass == $passc){
         // sqlite connect
         $link = new SQLite3(dirname(__FILE__) . "/../main.db");
         if (!$link) {
@@ -29,7 +28,7 @@
 
         }
         $link->close();
-    }
+
     // redirect path
     header("Location: /view.php?devid=".$numb);
 
