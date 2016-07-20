@@ -10,7 +10,8 @@ include_once(dirname(__FILE__).'/header.html');
             <div class="alert alert-info" role="alert">
                 <p>本サービスは限りなくベータ版です.不具合によるサービス停止もございます.</p>
             </div>
-            <button type="button" class="btn btn-lg btn-success btn-block" onclick="location.href='./search.php'">Let's Start!</button>
+            <button type="button" class="btn btn-lg btn-success btn-block" onclick="location.href='./search.php'">Let's Start!</button><br>
+            すべてのデバイスリストを表示するなら <b>→</b> <button type="button" class="btn btn-lg btn-warning" onclick="location.href='./list.php'">Device List</button>
         </div>
     </body>
 </html>
