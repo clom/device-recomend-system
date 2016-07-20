@@ -53,6 +53,7 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                                     <?php selected_generator($price); ?>
                                 </select>
                             </div>
+                            <input type="hidden" name="devid" value="<?php echo $dev_id; ?>">
                             <br><br>                            
                             <button type="submit" class="btn btn-primary btn-large btn-block">Eval</button>
                         </form>
@@ -67,6 +68,7 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                         <th>Price</th>
                     </thead>
                     <tbody>
+                        <?php all_eval_usertable($dev_id); ?>
                     </tbody>
                 </table>
             </div>
