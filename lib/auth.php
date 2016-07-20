@@ -3,7 +3,7 @@
     require_once(dirname(__FILE__)."/../conf.php");
     
     // POST info
-    $id = $_POST['uid'];
+    $id = htmlspecialchars($_POST['uid']);
     $pass = sha1($_POST['password']);
     $preturn = $_POST['returnpath'];
 
