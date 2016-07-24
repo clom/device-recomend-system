@@ -73,7 +73,7 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                 </table>
             </div>
             <div class="col-md-4">
-                <h1>Similar User Recommend Device</h1>
+                <h1>Ad</h1>
             </div>
         </div>
     </body>

@@ -82,8 +82,11 @@
 
     // Collaborative Filtering. start
     // array {userid, evalAVG,}
-    function collaborative_recommend(array $user){
+    function collaborative_recommend($user){
         $recommend = array();
+        $useravg = array();
+        $total = array();
+        $sim_sum = array();
 
         // sqlite connect
         $link = new SQLite3(dirname(__FILE__) . "/../main.db");
@@ -91,15 +94,60 @@
             die('接続失敗です。'.$sqliteerror);
         }
         else{
-	        $sql = "select count(*) from device;";
+            //device array
+            $sql = "select name from device";
 	        $result = $link->query($sql);
-            $res = $result->fetchArray(SQLITE3_ASSOC);
-            // Device count
-            $count = $res["count(*)"];
+            while($res = $result->fetchArray(SQLITE3_ASSOC)){
+                $total = array_merge($total, array($res['name'] => 0));
+                $sim_sum = array_merge($sim_sum, array($res['name'] => 0));
+            }
+             // array {userid => array(device => avg, ......)}
+	        $sql = "select ID, Account_name from auth";
+	        $u_result = $link->query($sql);
+            while($res = $u_result->fetchArray(SQLITE3_ASSOC)){
+                $accountid = $res['ID'];
+                $sql = "select Dev_ID, name, Spec, Design, Price from device, eval where device.ID = eval.Dev_ID and Account_ID = ".$accountid;
+	            $d_result = $link->query($sql);
+                $device = array();
+                while ($ures = $d_result->fetchArray(SQLITE3_ASSOC)) {
+                    $device_name = $ures['name'];
+                    $avg = ($ures['Spec'] + $ures['Design'] + $ures['Price']) / 3;
+                    $device = array_merge($device, array($device_name => $avg));
+                }
+                $useravg = array_merge($useravg, array($res['Account_name'] => $device));
+            }
 
-        $link->close();
+
+        }
+        foreach ($useravg as $person => $value) {
+            if($user === $person){
+            }
+            else{
+                $peason_s = person_sim($useravg, $user, $person);
+                if($peason_s >= 0){
+                    foreach ($value as $device_n => $value) {
+                        if(!array_key_exists($device_n, $useravg[$user]) || $useravg[$user][$device_n] == 0){
+                            // score * peason_sim 
+                            $total[$device_n] += $useravg[$person][$device_n] * $peason_s;
+                            $sim_sum[$device_n] += $peason_s;
+                        }
+                    }
+                }
+            }
+        }
+        $i = 0;
+        foreach ($total as $item => $value) {
+            if($sim_sum[$item] != 0){
+                $score = $value / $sim_sum[$item];
+                $dev_score = array('device' => $item, 'similarity' => $score);
+                $recommend = array_merge($recommend, array($i => $dev_score));
+            }
+            $i++;
         }
 
+        array_multisort(array_column($recommend, 'similarity'), SORT_DESC, $recommend);
+
+        $link->close();
         return $recommend;
     }
 
@@ -114,19 +162,19 @@
         }
 
         if(count($sim) === 0){
-            return 0;
+            return 0.0;
         }
 
         // sum
-        $psum1 = 0;
-        $psum2 = 0;
+        $psum1 = 0.0;
+        $psum2 = 0.0;
 
         // sqrt sum 
-        $psumsq1 = 0;
-        $psumsq2 = 0;
+        $psumsq1 = 0.0;
+        $psumsq2 = 0.0;
     
         // multi sum
-        $psum = 0;
+        $psum = 0.0;
     
         // culcurator
         foreach ($sim as $item => $value) {
@@ -139,8 +187,8 @@
 
         $molecule = $psum - ($psum1 * $psum2 / count($sim)) ;
         $denominator = sqrt(($psumsq1 - ($psum1 * $psum1) / count($sim))* ($psumsq2 - ($psum2 * $psum2) / count($sim)));
-        if($denominator == 0){
-            return 0;
+        if($denominator === 0.0){
+            return 0.0;
         }
         else{
             return $molecule / $denominator;
@@ -179,6 +227,22 @@
             }
         $link->close();
         }
+    }
+
+    function getDevice_ID($dev_name){
+         // sqlite connect
+        $link = new SQLite3(dirname(__FILE__) . "/../main.db");
+   	    if (!$link) {
+            die('接続失敗です。'.$sqliteerror);
+        }
+        else{
+	        $sql = "select * from device where name ='".$dev_name."'";
+	        $result = $link->query($sql);
+            $res = $result->fetchArray(SQLITE3_ASSOC);
+            return $res['ID']; 
+        }
+        $link->close();
+        return 0;
     }
 
     session_write_close();

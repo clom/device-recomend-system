@@ -65,7 +65,7 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                                 $num = $i + 1;
                                 //  $result[$i]['similarity'] はコサイン類似度
                                 //  $num は順位
-                                echo "<tr><td><a href='./view.php?devid=".$result[$i]['dev_id']."'>".$result[$i]['device']."</a></td><td>".$num."</td></tr>";
+                                echo "<tr><td><a href='./view.php?devid=".getDevice_ID($result[$i]['device'])."'>".$result[$i]['device']."</a></td><td>".$num."</td></tr>";
                             }
                         }
                         ?>
