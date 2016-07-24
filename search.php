@@ -2,14 +2,24 @@
 <?php
 $title = "Device Search"; 
 include_once(dirname(__FILE__).'/header.html');
-require_once(dirname(__FILE__).'/selecter.php'); 
+require_once(dirname(__FILE__).'/selecter.php');
+require_once(dirname(__FILE__).'/lib/action.php');
+require_once(dirname(__FILE__).'/conf.php');  
 $spec = 0;
 $design = 0;
 $price = 0;
+$result = array();
+$flag = false;
+
 if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])){
     $spec = $_POST['spec'];
     $design = $_POST['design'];
     $price = $_POST['price'];
+
+    // contents base filltering
+    $input = array('spec' => $spec, 'design' => $design, 'price' => $price);
+    $result = contents_recommend($input);
+    $flag = true;
 }
 
 ?>
@@ -46,11 +56,19 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                 <table class="table table-bordered">
                     <thead>
                         <th>Device name</th>
-                        <th>Spec Avg.</th>
-                        <th>Design Avg.</th>
-                        <th>Price Avg.</th>
+                        <th>Rank</th>
                     </thead>
                     <tbody>
+                        <?php
+                        if($flag){
+                            for ($i = 0; $i < $max_recommend; $i++){
+                                $num = $i + 1;
+                                //  $result[$i]['similarity'] はコサイン類似度
+                                //  $num は順位
+                                echo "<tr><td><a href='./view.php?devid=".$result[$i]['dev_id']."'>".$result[$i]['device']."</a></td><td>".$num."</td></tr>";
+                            }
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

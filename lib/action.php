@@ -24,10 +24,66 @@
     }
     
     // contents base filltering. start
+    //array {spec,design,price}
+    function contents_recommend(array $input_val){
+        $recommend = array();
+        $input_sum = 0;
 
+        // input sum 
+        foreach (array_keys($input_val) as $note){
+            $input_sum += $input_val[$note] *  $input_val[$note];
+        }
+
+        // sqlite connect
+        $link = new SQLite3(dirname(__FILE__) . "/../main.db");
+   	    if (!$link) {
+            die('接続失敗です。'.$sqliteerror);
+        }
+        else{
+	        $sql = "select Dev_ID, name, avg(Spec), avg(Design), avg(Price) from device, eval where device.ID = eval.Dev_ID group by name";
+	        $result = $link->query($sql);
+            while($res = $result->fetchArray(SQLITE3_ASSOC)){
+                // init 
+                $device_val = array('spec' => $res['avg(Spec)'] , 'design' => $res['avg(Design)'], 'price' => $res['avg(Price)']);
+                $denominator = 0;
+                $molecule = 0;
+                $device_sum = 0;
+
+                // molecule 
+                foreach (array_keys($input_val) as $note1) {
+                    foreach (array_keys($device_val) as $note2) {
+                        if($note1 === $note2){
+                            $molecule += $device_val[$note1] * $input_val[$note2];  
+                        }
+                    }
+                }
+
+                // denominator exclude $input_sum
+                foreach (array_keys($device_val) as $note){
+                    $device_sum += $device_val[$note] *  $device_val[$note];
+                }
+
+                $denominator = sqrt($input_sum) * sqrt($device_sum);
+
+                $num = $molecule / $denominator;
+                $device_result = array('dev_id' => $res['Dev_ID'], 'device' => $res['name'] , 'similarity' => $num);
+                array_push($recommend, $device_result);
+            }
+        // sort
+        array_multisort(array_column($recommend, 'similarity'), SORT_DESC, $recommend);
+        // sqlite close;
+        $link->close();
+
+        return $recommend;
+        }
+
+    }
     // ended
 
     // Collaborative Filtering. start
+    function collaborative_recommend(array $user){
+
+    }
 
     // ended
 
