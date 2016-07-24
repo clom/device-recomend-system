@@ -81,8 +81,70 @@
     // ended
 
     // Collaborative Filtering. start
+    // array {userid, evalAVG,}
     function collaborative_recommend(array $user){
+        $recommend = array();
 
+        // sqlite connect
+        $link = new SQLite3(dirname(__FILE__) . "/../main.db");
+   	    if (!$link) {
+            die('接続失敗です。'.$sqliteerror);
+        }
+        else{
+	        $sql = "select count(*) from device;";
+	        $result = $link->query($sql);
+            $res = $result->fetchArray(SQLITE3_ASSOC);
+            // Device count
+            $count = $res["count(*)"];
+
+        $link->close();
+        }
+
+        return $recommend;
+    }
+
+    // $prefs: 対象データ
+    // $person1, $person2: 人
+    function person_sim($prefs, $person1, $person2){
+        $sim = array();
+        foreach ($prefs[$person1] as $item => $value) {
+            if(array_key_exists($item, $prefs[$person2])){
+                $sim[$item] = 1;
+            }
+        }
+
+        if(count($sim) === 0){
+            return 0;
+        }
+
+        // sum
+        $psum1 = 0;
+        $psum2 = 0;
+
+        // sqrt sum 
+        $psumsq1 = 0;
+        $psumsq2 = 0;
+    
+        // multi sum
+        $psum = 0;
+    
+        // culcurator
+        foreach ($sim as $item => $value) {
+            $psum1 += $prefs[$person1][$item];
+            $psum2 += $prefs[$person2][$item];
+            $psumsq1 += $prefs[$person1][$item] * $prefs[$person1][$item];
+            $psumsq2 += $prefs[$person2][$item] * $prefs[$person2][$item];
+            $psum += $prefs[$person1][$item] * $prefs[$person2][$item];
+        }
+
+        $molecule = $psum - ($psum1 * $psum2 / count($sim)) ;
+        $denominator = sqrt(($psumsq1 - ($psum1 * $psum1) / count($sim))* ($psumsq2 - ($psum2 * $psum2) / count($sim)));
+        if($denominator == 0){
+            return 0;
+        }
+        else{
+            return $molecule / $denominator;
+        }
     }
 
     // ended
