@@ -58,6 +58,8 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                             <br><br>                            
                             <button type="submit" class="btn btn-primary btn-large btn-block">Eval</button>
                         </form>
+                        <?php } else{ ?>
+                        <h2>サインインしてください</h2>
                         <?php } ?>
                     </div>
                 </div>
