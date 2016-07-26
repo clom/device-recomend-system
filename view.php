@@ -34,6 +34,7 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                     <div class="panel-body">
                         <p> Your Eval Rating </p>
                         <br>
+                        <?php if(login_check()){ ?>
                         <form class="form-inline" method="POST" action="./lib/eval.php">
                             <div class="form-group">
                                 <label>Spec</label>
@@ -57,6 +58,7 @@ if(!empty($_POST['spec']) && !empty($_POST['design']) && !empty($_POST['price'])
                             <br><br>                            
                             <button type="submit" class="btn btn-primary btn-large btn-block">Eval</button>
                         </form>
+                        <?php } ?>
                     </div>
                 </div>
                 <h1>ALL User Eval</h1>
